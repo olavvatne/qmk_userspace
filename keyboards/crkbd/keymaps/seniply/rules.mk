@@ -1,6 +1,6 @@
 
-# https://getreuer.info/posts/keyboards/layer-lock/index.html
-SRC += features/layer_lock.c
+# https://getreuer.info/posts/keyboards/achordion/index.html
+SRC += features/achordion.c
 
 OLED_ENABLE = yes
 MOUSEKEY_ENABLE = yes
