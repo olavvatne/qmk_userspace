@@ -3,8 +3,9 @@
 /* Select hand configuration */
 #define MASTER_LEFT
 
-
-#define TAPPING_TERM 200
+#define TAPPING_TERM 250
+#define CHORDAL_HOLD
+#define PERMISSIVE_HOLD
 #define QUICK_TAP_TERM 0
 
 #define DOUBLE_TAP_SHIFT_TURNS_ON_CAPS_WORD
