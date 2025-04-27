@@ -10,9 +10,7 @@ enum layer_names {
   _FUNC,
 };
 
-enum custom_keycodes {
-  LLOCK = SAFE_RANGE,
-};
+os_variant_t current_os = OS_UNSURE;
 
 #define MO_EXT   MO(_EXT)
 #define MO_SYM   MO(_SYM)
@@ -73,3 +71,64 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
 
   return true;
 }
+
+
+#ifdef OLED_ENABLE
+bool oled_task_user(void) {
+    oled_write_P(PSTR("Layer: "), false);
+
+    switch (get_highest_layer(layer_state)) {
+        case _BASE:
+            oled_write_P(PSTR("BASE\n"), false);
+            break;
+        case _EXT:
+            oled_write_P(PSTR("EXT\n"), false);
+            break;
+        case _SYM:
+            oled_write_P(PSTR("SYM\n"), false);
+            break;
+        case _NUM:
+            oled_write_P(PSTR("NUM\n"), false);
+            break;
+        case _FUNC:
+            oled_write_P(PSTR("FUNC\n"), false);
+            break;
+        default:
+            // Or use the write_ln shortcut over adding '\n' to the end of your string
+            oled_write_ln_P(PSTR("Undefined"), false);
+    }
+
+    oled_write_P(PSTR("OS: "), false);
+    switch (current_os) {
+        case OS_MACOS:
+            oled_write_ln_P(PSTR("macOS"), false);
+            break;
+        case OS_IOS:
+            oled_write_ln_P(PSTR("iOS"), false);
+            break;
+        case OS_WINDOWS:
+            oled_write_ln_P(PSTR("Win"), false);
+            break;
+        case OS_LINUX:
+            oled_write_ln_P(PSTR("Linux"), false);
+            break;
+        case OS_UNSURE:
+        default:
+            oled_write_ln_P(PSTR("?"), false);
+            break;
+    }
+
+    return false;
+}
+#endif
+
+#ifdef OS_DETECTION_ENABLE
+bool process_detected_host_os_kb(os_variant_t detected_os) {
+    if (!process_detected_host_os_user(detected_os)) {
+        return false;
+    }
+
+    current_os = detected_os;
+    return true;
+}
+#endif
