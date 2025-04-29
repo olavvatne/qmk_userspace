@@ -22,5 +22,5 @@ See [qmk_userspace repo](https://github.com/qmk/qmk_userspace)
 ## Commands
 
 ```bash
-qmk c2json ./keyboards/crkbd/keymaps/seniply/keymap.c
+qmk c2json ./keyboards/crkbd/rev1/keymaps/seniply/keymap.c
 ```
