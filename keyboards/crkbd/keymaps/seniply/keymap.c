@@ -11,6 +11,7 @@ enum layer_names {
 };
 
 os_variant_t current_os = OS_UNSURE;
+char last_key_pressed[16] = "None"; 
 
 #define MO_EXT   MO(_EXT)
 #define MO_SYM   MO(_SYM)
@@ -27,9 +28,14 @@ os_variant_t current_os = OS_UNSURE;
 #define ALT_DOT ALT_T(KC_DOT)
 #define GUI_SLSH GUI_T(KC_SLSH)
 
+enum custom_keycodes {
+    TOGGLE_OVERLAY = SAFE_RANGE,
+};
+
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_BASE] = LAYOUT_split_3x6_3(
-      XXXXXXX,    KC_Q,    KC_W,    KC_F,    KC_P,    KC_B,                     KC_J,    KC_L,    KC_U,    KC_Y,    KC_QUOT,XXXXXXX,
+TOGGLE_OVERLAY,    KC_Q,    KC_W,    KC_F,    KC_P,    KC_B,                     KC_J,    KC_L,    KC_U,    KC_Y,    KC_QUOT, TOGGLE_OVERLAY,
       XXXXXXX,    KC_A,    KC_R,    KC_S,    KC_T,    KC_G,                     KC_M,    KC_N,    KC_E,    KC_I,    KC_O,  XXXXXXX,
       XXXXXXX,    GUI_Z ,  ALT_X,   CTL_C,   SFT_D,   KC_V,                     KC_K,    SFT_H,   CTL_COMM,ALT_DOT, GUI_SLSH,MO_FUNC,
                                            KC_TAB, MO_EXT, KC_LSFT,    KC_SPC, MO_SYM, _______
@@ -63,12 +69,50 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
 };
 
+void send_super_shift_code(uint16_t keycode) {
+    register_mods(MOD_BIT(KC_LSFT) | MOD_BIT(KC_LGUI));
+    register_code(keycode);
+    unregister_code(keycode);
+    unregister_mods(MOD_BIT(KC_LSFT) | MOD_BIT(KC_LGUI));
+}
+
+
 layer_state_t layer_state_set_user(layer_state_t state) {
-    return update_tri_layer_state(state, _SYM, _EXT, _NUM);
+    state =  update_tri_layer_state(state, _SYM, _EXT, _NUM);
+
+    int16_t layer = _BASE;
+    switch (get_highest_layer(state)) {
+        case _EXT:
+            layer = _EXT;
+            break;
+        case _SYM:
+            layer = _SYM;
+            break;
+        case _NUM:
+            layer = _NUM;
+            break;
+        case _FUNC:
+            layer = _FUNC;
+            break;
+        default:
+            layer = _BASE;
+            break;
+    }
+    // Communicate layer activation to OS
+    send_super_shift_code(KC_F14 + layer);
+    
+    return state;
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t* record) {
-
+    if (record->event.pressed) {
+        switch(keycode) {
+            case TOGGLE_OVERLAY:
+            send_super_shift_code(KC_F13);
+            return false;
+        }
+        snprintf(last_key_pressed, sizeof(last_key_pressed), "0x%04X", keycode);
+    }
   return true;
 }
 
@@ -117,6 +161,9 @@ bool oled_task_user(void) {
             oled_write_ln_P(PSTR("?"), false);
             break;
     }
+
+    oled_write_ln_P(PSTR("Key:"), false);
+    oled_write_ln_P(last_key_pressed, false);
 
     return false;
 }

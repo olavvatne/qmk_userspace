@@ -19,3 +19,8 @@ qmk compile -kb crkbd/rev1 -km seniply
 
 See [qmk_userspace repo](https://github.com/qmk/qmk_userspace)
 
+## Commands
+
+```bash
+qmk c2json ./keyboards/crkbd/keymaps/seniply/keymap.c
+```
