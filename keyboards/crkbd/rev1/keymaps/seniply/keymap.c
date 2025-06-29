@@ -2,6 +2,11 @@
 
 #include QMK_KEYBOARD_H
 
+
+const uint32_t PROGMEM unicode_map[] = {
+
+};
+
 enum layer_names {
   _BASE,
   _EXT,
@@ -28,8 +33,12 @@ char last_key_pressed[16] = "None";
 #define ALT_DOT ALT_T(KC_DOT)
 #define GUI_SLSH GUI_T(KC_SLSH)
 
+
 enum custom_keycodes {
     TOGGLE_OVERLAY = SAFE_RANGE,
+    NO_AE,
+    NO_OSTR,
+    NO_ARNG,
 };
 
 
@@ -41,9 +50,9 @@ TOGGLE_OVERLAY,    KC_Q,    KC_W,    KC_F,    KC_P,    KC_B,                    
                                            KC_TAB, MO_EXT, KC_LSFT,    KC_SPC, MO_SYM, _______
   ),
   [_EXT] = LAYOUT_split_3x6_3(
-      _______, KC_ESC, XXXXXXX, XXXXXXX, XXXXXXX, KC_INS,                      KC_HOME, KC_PGUP, KC_UP,   KC_PGDN,  XXXXXXX, _______,
-      _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                    KC_END,  KC_LEFT, KC_DOWN, KC_RIGHT, KC_DELETE, _______,
-      _______, XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX, XXXXXXX,                      XXXXXXX, KC_BSPC, KC_TAB,  KC_DELETE,  XXXXXXX, _______,
+      _______, KC_ESC, XXXXXXX, XXXXXXX, XXXXXXX, KC_INS,                      KC_HOME, KC_PGUP, KC_UP,   KC_PGDN, NO_AE, _______,
+      _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                    KC_END,  KC_LEFT, KC_DOWN, KC_RIGHT, NO_OSTR, _______,
+      _______, _______,   _______,   _______,   _______, XXXXXXX,              XXXXXXX, KC_BSPC, KC_TAB,  KC_DELETE,  NO_ARNG, _______,
                                           _______, _______, _______,    KC_ENT, _______, _______
       //                                           ^^^^^^^
   ),
@@ -108,8 +117,19 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
     if (record->event.pressed) {
         switch(keycode) {
             case TOGGLE_OVERLAY:
-            send_super_shift_code(KC_F13);
-            return false;
+                send_super_shift_code(KC_F13);
+                return false;
+            case NO_AE:
+                send_unicode_string((get_mods() & MOD_MASK_SHIFT) ? "Æ" : "æ");
+                return false;
+
+            case NO_OSTR:
+                send_unicode_string((get_mods() & MOD_MASK_SHIFT) ? "Ø" : "ø");
+                return false;
+
+            case NO_ARNG:
+                send_unicode_string((get_mods() & MOD_MASK_SHIFT) ? "Å" : "å");
+                return false;
         }
         snprintf(last_key_pressed, sizeof(last_key_pressed), "0x%04X", keycode);
     }
@@ -175,7 +195,21 @@ bool process_detected_host_os_kb(os_variant_t detected_os) {
         return false;
     }
 
+
     current_os = detected_os;
+    switch (current_os) {
+        case OS_WINDOWS:
+            set_unicode_input_mode(UNICODE_MODE_WINCOMPOSE);
+            break;
+        case OS_MACOS:
+            set_unicode_input_mode(UNICODE_MODE_MACOS);
+            break;
+        case OS_LINUX:
+            set_unicode_input_mode(UNICODE_MODE_LINUX);
+            break;
+        default:
+            break;
+    }
     return true;
 }
 #endif
