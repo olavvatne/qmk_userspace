@@ -44,29 +44,29 @@ enum custom_keycodes {
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_BASE] = LAYOUT_split_3x6_3(
-TOGGLE_OVERLAY,    KC_Q,    KC_W,    KC_F,    KC_P,    KC_B,                     KC_J,    KC_L,    KC_U,    KC_Y,    KC_QUOT, TOGGLE_OVERLAY,
-      XXXXXXX,    KC_A,    KC_R,    KC_S,    KC_T,    KC_G,                     KC_M,    KC_N,    KC_E,    KC_I,    KC_O,  XXXXXXX,
+  TOGGLE_OVERLAY, KC_Q,    KC_W,    KC_F,    KC_P,    KC_B,                     KC_J,    KC_L,    KC_U,    KC_Y,    KC_QUOT, TOGGLE_OVERLAY,
+      XXXXXXX,    KC_A,    KC_R,    KC_S,    KC_T,    KC_G,                     KC_M,    KC_N,    KC_E,    KC_I,    KC_O,    XXXXXXX,
       XXXXXXX,    GUI_Z ,  ALT_X,   CTL_C,   SFT_D,   KC_V,                     KC_K,    SFT_H,   CTL_COMM,ALT_DOT, GUI_SLSH,MO_FUNC,
                                            KC_TAB, MO_EXT, KC_LSFT,    KC_SPC, MO_SYM, _______
   ),
   [_EXT] = LAYOUT_split_3x6_3(
-      _______, KC_ESC, XXXXXXX, XXXXXXX, XXXXXXX, KC_INS,                      KC_HOME, KC_PGUP, KC_UP,   KC_PGDN, NO_AE, _______,
-      _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                    KC_END,  KC_LEFT, KC_DOWN, KC_RIGHT, NO_OSTR, _______,
-      _______, _______,   _______,   _______,   _______, XXXXXXX,              XXXXXXX, KC_BSPC, KC_TAB,  KC_DELETE,  NO_ARNG, _______,
+      _______, KC_ESC, XXXXXXX, XXXXXXX, XXXXXXX, KC_INS,                      KC_HOME, KC_PGUP, KC_UP,   KC_PGDN, KC_CAPS, _______,
+      _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_ALGR,                    KC_END,  KC_LEFT, KC_DOWN, KC_RIGHT, KC_DEL, _______,
+      _______, _______, _______, _______, _______, XXXXXXX,                    XXXXXXX, KC_BSPC, KC_TAB,  KC_APP,   KC_PSCR, _______,
                                           _______, _______, _______,    KC_ENT, _______, _______
       //                                           ^^^^^^^
   ),
   [_SYM] = LAYOUT_split_3x6_3(
-      _______, KC_EXLM, KC_AT,   KC_HASH, KC_DLR, KC_PERC,                     KC_EQL, XXXXXXX, XXXXXXX,  KC_COLN,  KC_SCLN, _______,
-      _______, XXXXXXX, KC_SLSH, KC_BSLS, KC_PIPE, KC_CIRC,                    KC_LABK, KC_LPRN, KC_LCBR, KC_LBRC,  KC_MINS, _______,
-      _______, XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX, KC_AMPR,                      KC_RABK, KC_RPRN, KC_RCBR, KC_RBRC,  KC_UNDS, _______,
+      _______, KC_EXLM, KC_AT,   KC_HASH, KC_DLR, KC_PERC,                     KC_EQL, KC_GRV, KC_COLN,  KC_SCLN,  KC_PLUS, _______,
+      _______, NO_ARNG, NO_OSTR, KC_LABK, KC_SLSH, KC_PIPE,                    KC_ASTR, KC_LPRN, KC_LCBR, KC_LBRC,  KC_MINS, _______,
+      _______, NO_AE  , KC_CIRC, KC_RABK, KC_BSLS, KC_AMPR,                    KC_TILD, KC_RPRN, KC_RCBR, KC_RBRC,  KC_UNDS, _______,
                                           _______, _______, _______,    _______, _______, _______
       //                                                                         ^^^^^^^
   ),
     [_NUM] = LAYOUT_split_3x6_3(
-      _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      KC_PEQL, KC_7, KC_8, KC_9,  KC_PPLS, _______,
-      _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      KC_PAST, KC_4, KC_5, KC_6,  KC_PMNS, _______,
-      _______, XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,                        KC_0,      KC_1,   KC_2,   KC_3,   KC_PSLS, _______,
+      _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                     KC_PEQL, KC_7, KC_8, KC_9,  KC_PPLS, _______,
+      _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                     KC_PAST, KC_4, KC_5, KC_6,  KC_PMNS, _______,
+      _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                     KC_0,    KC_1, KC_2, KC_3,  KC_PSLS, _______,
                                           _______, _______, _______,    _______, _______, _______
       //                                           ^^^^^^^                       ^^^^^^^
   ),
